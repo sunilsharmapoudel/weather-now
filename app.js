@@ -2,8 +2,6 @@ const express = require("express");
 require('dotenv').config();
 const https = require("https");
 const bodyParser = require("body-parser");
-const fs = require("fs");
-const { dirname } = require("path");
 const ejs = require("ejs");
 const port = process.env.port;
 const { IPinfoWrapper } = require("node-ipinfo");
