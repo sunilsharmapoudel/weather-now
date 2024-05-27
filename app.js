@@ -17,27 +17,6 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
-// app.get('/', (req, res) => {
-//     res.render("index",{
-//         usercity: "userCity",
-// userregion: "region",
-// weatherMain:"main",
-// imageUrl : "@4x.png",
-// temp: "main.temp",
-// desc: "description",
-// mintemp: "temp_min",
-// maxtemp: "temp_max",
-// sunrise: "sunrise",
-// sunset: "sunset",
-// longi: "lon",
-// lati: "lat",
-// press: "main.pressure",
-// humi: "main.humidity",
-// day:"day",
-//     })
-                            
-// } )
-
 app.get('/', async (req, res) => {
     const request = await fetch(`https://ipinfo.io/json?token=${process.env.ip_token}`)
     const jsonResponse = await request.json()
