@@ -17,44 +17,57 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', async (req, res) => {
     const request = await fetch(`https://ipinfo.io/json?token=${process.env.ip_token}`)
-    const jsonResponse = await request.json()
-    let region = jsonResponse.region;
+    const jsonResponse = await request.json();
     const userCity = req.query.city || jsonResponse.city;
     const day = new Date().toDateString();
     var apiKey = process.env.weather_api;
     var units = "metric";
+    const requestWeather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${userCity}&appid=${apiKey}&units=${units}`)
+    const weatherData = await requestWeather.json();
 
-    const url = "https://api.openweathermap.org/data/2.5/weather?q="+userCity+"&appid="+apiKey+"&units="+units+""  
-     https.get(url, function(response) {
-            console.log(response.statusCode);
-            response.on('data', function(data) {
-                var  weatherData = JSON.parse(data);
-                const icon =  weatherData.weather[0].icon; 
-                console.log( )
-                res.render("index",
-                    {
-                        usercity: userCity,
-                        userregion: region,
-                        weatherMain: weatherData.weather[0].main,
-                        imageUrl : "https://openweathermap.org/img/wn/"+ icon + "@4x.png",
-                        temp:  weatherData.main.temp,
-                        desc: weatherData.weather[0].description,
-                        mintemp: weatherData.main.temp_min,
-                        maxtemp: weatherData.main.temp_max,
-                        sunrise: weatherData.sys.sunrise,
-                        sunset: weatherData.sys.sunset,
-                        longi: weatherData.coord.lon,
-                        lati: weatherData.coord.lat,
-                        press: weatherData.main.pressure,
-                        humi: weatherData.main.humidity,
-                        day:day,
-                    }
-                )
+    try {
+        const icon =  weatherData.weather[0].icon;
+        res.render("index",
+         {
+            errmsg:null,
+             usercity: userCity,
+             ctry:weatherData.sys.country,
+             weatherMain: weatherData.weather[0].main,
+             imageUrl : "https://openweathermap.org/img/wn/"+ icon + "@4x.png",
+             temp:  weatherData.main.temp,
+             desc: weatherData.weather[0].description,
+             mintemp: weatherData.main.temp_min,
+             maxtemp: weatherData.main.temp_max,
+             sunrise: weatherData.sys.sunrise,
+             sunset: weatherData.sys.sunset,
+             longi: weatherData.coord.lon,
+             lati: weatherData.coord.lat,
+             press: weatherData.main.pressure,
+             humi: weatherData.main.humidity,
+             day:day,
+         }
+     )
 
-                
-            })
-        })
- 
+    }catch (err) {
+            res.render('index', {
+                errmsg:weatherData.message,
+                usercity: null,
+                ctry:null,
+                weatherMain: null,
+                imageUrl : null,
+                temp:  null,
+                desc: null,
+                mintemp: null,
+                maxtemp: null,
+                sunrise: null,
+                sunset: null,
+                longi: null,
+                lati: null,
+                press: null,
+                humi: null,
+                day:day,
+            });
+          } 
     })
 
  app.post("/", (req, res) => {
