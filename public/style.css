@@ -234,6 +234,7 @@
 
   .weather-desc {
     text-align: center;
+    font-size: 20px;
     font-family: "Righteous", cursive;
     color: white;
     margin: 0 15%;
@@ -292,6 +293,9 @@
       display: block;
       font-size: 25px;
     }
+    .nav-links {
+      font-size: 27px;
+    }
     .mob-drawer {
       display: none !important;
     }
@@ -305,7 +309,7 @@
     }
 
     .loc-container {
-      height: 350px;
+      height: 440px;
     }
 
     .user-location {
@@ -350,46 +354,37 @@
       font-size: 50px;
     }
     .weather-desc {
-      font-size: 25px;
+      font-size: 35px;
     }
     .info-list > li {
       font-size: 25px;
     }
 
-    .error-container {
-      height: ;
-    }
     
   }
   @media only screen and (min-width: 1920px) {
     .header-wrapper {
-      height: 100px;
+      height: 110px;
     }
     .desktop-nav {
       display: block;
-      font-size: 35px;
-    }
-    .mob-drawer {
-      display: none !important;
+      font-size: 100px;
     }
 
-    .nav-list { 
-      display: flex;
+    .brand {
+      margin-left: 40px;
+      font-size: 60px;
+      color:white;
     }
 
-    .mobile-nav {
-      display: none !important;
-    }
-
-    .loc-container {
-      height: 350px;
+    .nav-links {
+      font-size: 40px;
     }
 
     .user-location {
-      font-size: 50px;
+      font-size: 70px;
       padding-top: 60px;
     }
-
     .search-form {
       margin-top: 20px;
       width: 50%;
@@ -401,41 +396,49 @@
 
   .user-country {
     margin-top: 20px;
-    font-size: 30px;
+    font-size: 50px;
   }
-    .today-date > span {
-      font-size: 40px;
+
+  .weather-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .today-date > span {
+      font-size: 50px;
     }
 
-    .weather-main-data {
-      font-size: 40px;
+  .weather-main-data {
+      font-size: 60px;
       text-align: center;
     }
     
-    .temp-main-data {
-      font-size: 40px;
+  .temp-main-data {
+      font-size: 60px;
       text-align: center;
       
     }
-
-    .weather-container {
-      display: flex;
-      justify-content: center;
-    }
     
     .headings {
+      font-size: 60px;
+    }
+
+    .weather-desc {
       font-size: 50px;
     }
-    .weather-desc {
-      font-size: 25px;
-    }
     .info-list > li {
-      font-size: 25px;
+      font-size: 35px;
     }
 
     .error-container {
       font-size: 60px;
     }
+
+    .copyright {
+      font-size: 45px;  
+    }
+    
     
   }
 
