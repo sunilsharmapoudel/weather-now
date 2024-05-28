@@ -1,7 +1,9 @@
 const express = require("express");
 require('dotenv').config();
 const https = require("https");
+const favicon = require('serve-favicon');
 const bodyParser = require("body-parser");
+const path = require('path');
 const ejs = require("ejs");
 const port = process.env.port;
 const { IPinfoWrapper } = require("node-ipinfo");
@@ -14,6 +16,8 @@ app.set('view engine', 'ejs');
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico'))); 
+
 
 app.get('/', async (req, res) => {
     const request = await fetch(`https://ipinfo.io/json?token=${process.env.ip_token}`)

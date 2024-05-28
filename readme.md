@@ -181,6 +181,7 @@ Moile Screenshot
   .header {
     background-color: #3d72b4;
   }
+
   .container {
   display: flex;
   flex-direction: column;
@@ -199,11 +200,16 @@ Moile Screenshot
   .brand {
     margin-left: 10px;
     font-size: 30px;
-    color:white;
+  }
+
+  .brand>a {
+    text-decoration: none;
+    color: white;
   }
 
   .ham-icon {
     margin-right: 10px;
+    cursor: pointer;
   }
   
   .mob-drawer {
@@ -352,6 +358,13 @@ Moile Screenshot
     margin-right: 10px;
   }
 
+  .headings{
+    text-decoration: underline wavy;
+    text-decoration-thickness: 3px;
+    padding-bottom: 2px;
+  }
+  
+
   .weather-infos {
     display: flex;
     flex-direction: row;
@@ -392,7 +405,6 @@ Moile Screenshot
     margin-bottom: 20px;
     margin-top: 10px;
   }
-
   .today-desc {
     width: 100%;
     height: max-content;
@@ -455,6 +467,32 @@ Moile Screenshot
     text-decoration: none;
   }
 
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #4a569d;
+  border-radius: 10px; 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); 
+  border-radius: 10px; 
+  border: 2px solid #4a569d; 
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(207, 18, 18, 0.8);
+}
+
+html {
+  scrollbar-width: thin; 
+  scrollbar-color: rgba(0, 0, 0, 0.5) #4a569d;
+}
+
   @media only screen and (min-width: 1024px) {
     .header-wrapper {
       height: 80px;
@@ -500,7 +538,6 @@ Moile Screenshot
     margin-top: 20px;
     font-size: 30px;
   }
-
     .today-date > span {
       font-size: 40px;
     }
@@ -509,30 +546,32 @@ Moile Screenshot
       font-size: 40px;
       text-align: center;
     }
-
+    
     .temp-main-data {
       font-size: 40px;
       text-align: center;
+      
     }
 
     .weather-container {
       display: flex;
       justify-content: center;
     }
-
+    
     .headings {
       font-size: 50px;
+      text-decoration: underline wavy;
+      text-decoration-thickness: 3px;
+      padding-bottom: 2px;
     }
-
     .weather-desc {
       font-size: 35px;
     }
-
     .info-list > li {
       font-size: 25px;
     }
+    
   }
-
   @media only screen and (min-width: 1920px) {
     .header-wrapper {
       height: 110px;
@@ -541,14 +580,17 @@ Moile Screenshot
       display: block;
       font-size: 100px;
     }
+
     .brand {
       margin-left: 40px;
       font-size: 60px;
       color:white;
     }
+
     .nav-links {
       font-size: 40px;
     }
+
     .user-location {
       font-size: 70px;
       padding-top: 60px;
@@ -557,44 +599,56 @@ Moile Screenshot
       margin-top: 20px;
       width: 50%;
   }
+
   .user-city {
     width: 80%;
   }
+
   .user-country {
     margin-top: 20px;
     font-size: 50px;
   }
+
   .weather-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
   }
+
   .today-date > span {
       font-size: 50px;
     }
+
   .weather-main-data {
       font-size: 60px;
       text-align: center;
     }
+    
   .temp-main-data {
       font-size: 60px;
       text-align: center;
+      
     }
+  
     .headings {
       font-size: 60px;
     }
+
     .weather-desc {
       font-size: 50px;
     }
     .info-list > li {
       font-size: 35px;
     }
+
     .error-container {
       font-size: 60px;
     }
+
     .copyright {
       font-size: 45px;  
     }
+    
   }
 ```
 ```js
