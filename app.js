@@ -16,11 +16,15 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico'))); 
-
+app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
+app.use((req, res, next) => {
+    req.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    next();
+});
 
 app.get('/', async (req, res) => {
-    const request = await fetch(`https://ipinfo.io/json?token=${process.env.ip_token}`)
+    const ip = req.clientIp;
+    const request = await fetch(`https://ipinfo.io/${ip}/json?token=${process.env.ip_token}`)
     const jsonResponse = await request.json();
     const userCity = req.query.city || jsonResponse.city;
     const day = new Date().toDateString();
