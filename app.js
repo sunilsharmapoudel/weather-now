@@ -7,8 +7,7 @@ const path = require('path');
 const ejs = require("ejs");
 const port = process.env.port;
 const { IPinfoWrapper } = require("node-ipinfo");
-const { get } = require("http");
-const apiKey = process.env.weather_api;
+const { get } = require("http");    
 
 const app = express();
 
