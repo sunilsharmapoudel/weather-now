@@ -60,6 +60,7 @@ app.get('/', async (req, res) => {
 
     }catch (err) {
             res.render('index', {
+                inject: inject(),
                 errmsg:weatherData.message,
                 usercity: null,
                 ctry:null,
