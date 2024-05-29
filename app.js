@@ -7,7 +7,8 @@ const path = require('path');
 const ejs = require("ejs");
 const port = process.env.PORT || 3000;
 const { IPinfoWrapper } = require("node-ipinfo");
-const { get } = require("http");    
+const { get } = require("http");
+const { inject } =  require ("@vercel/analytics");
 
 const app = express();
 
@@ -37,7 +38,8 @@ app.get('/', async (req, res) => {
         const icon =  weatherData.weather[0].icon;
         res.render("index",
          {
-            errmsg:null,
+             inject: inject(),
+             errmsg:null,
              usercity: userCity,
              ctry:weatherData.sys.country,
              weatherMain: weatherData.weather[0].main,
