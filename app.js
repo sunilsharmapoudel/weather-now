@@ -5,7 +5,7 @@ const favicon = require('serve-favicon');
 const bodyParser = require("body-parser");
 const path = require('path');
 const ejs = require("ejs");
-const port = process.env.port;
+const port = process.env.PORT || 3000;
 const { IPinfoWrapper } = require("node-ipinfo");
 const { get } = require("http");    
 
