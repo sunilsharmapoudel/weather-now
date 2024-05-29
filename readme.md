@@ -25,7 +25,7 @@ Moile Screenshot
 
 ### Links
 
-- Live Site URL: [https://sunilsharmapoudel.github.io/dogmate/](https://sunilsharmapoudel.github.io/dogmate/)
+- Live Site URL: [https://weather-now-woad.vercel.app/](https://weather-now-woad.vercel.app/)
 
 ### Built with
 
@@ -34,6 +34,7 @@ Moile Screenshot
 - CSS custom properties
 - Express.js
 - Node.js
+- Vercel
 
 ### What I learned
 
@@ -50,21 +51,23 @@ Moile Screenshot
     <div class="container">
         <div class="header">
             <div class="header-wrapper">
-                <div class="brand">WeatherNow</div>
+                <div class="brand"><a href="/">WeatherNow</a></div>
                 <div class="navbar">
                     <div  id="ham-icon" class="mobile-nav" onclick="myFunction()">
                         <div class="ham-icon" ><span class="iconify" data-icon="solar:hamburger-menu-bold-duotone"></span></div>
                     </div>
+
                     <div class="desktop-nav">
                         <ul class="nav-list"> 
                         <li class="nav-links"><a href="#weather">Weather</a></li>
                         <li class="nav-links"><a href="#desc">Description</a></li>
                         <li class="nav-links"><a href="#all-info">All Information</a></li>
-                        <li class="nav-links"><a href="sunil-sharma.com.np">Contact Developer</a> </li>
+                        <li class="nav-links"><a href="https://sunil-sharma.com.np">Contact Developer</a> </li>
                         </ul>
                     </div>
                 </div>
             </div>
+
             <div id="drawer" class="mob-drawer">
                 <div class="navitems">
                     <ul class="nav-links-mob nav-list"> 
@@ -75,6 +78,7 @@ Moile Screenshot
                         </ul>
                 </div>
             </div>
+            
         </div>
         <div class="loc-container">
             <div class="user-location">
@@ -84,6 +88,8 @@ Moile Screenshot
                     <p> <%= errmsg.toUpperCase() %> !</p>
                     <% } %>
             </div>
+
+            
                 <form class="search-form" action="/" method="post">
                     <input class="user-city" type="search" name="usercity" placeholder="Search for your city" autocomplete="off"/>
                     <button class="search-botton" type="submit">
@@ -629,7 +635,7 @@ html {
       text-align: center;
       
     }
-  
+    
     .headings {
       font-size: 60px;
     }
@@ -648,26 +654,37 @@ html {
     .copyright {
       font-size: 45px;  
     }
-    
   }
 ```
 ```js
 const express = require("express");
 require('dotenv').config();
 const https = require("https");
+const favicon = require('serve-favicon');
 const bodyParser = require("body-parser");
+const path = require('path');
 const ejs = require("ejs");
-const port = process.env.port;
+const port = process.env.PORT || 3000;
 const { IPinfoWrapper } = require("node-ipinfo");
 const { get } = require("http");
-const apiKey = process.env.weather_api;
+const { inject } =  require ("@vercel/analytics");
+
 const app = express();
+
 app.set('view engine', 'ejs');
-app.use(express.static("public"));
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
+app.use((req, res, next) => {
+    req.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    next();
+});
 
 app.get('/', async (req, res) => {
-    const request = await fetch(`https://ipinfo.io/json?token=${process.env.ip_token}`)
+    const ip = req.clientIp;
+    const request = await fetch(`https://ipinfo.io/${ip}/json?token=${process.env.ip_token}`)
     const jsonResponse = await request.json();
     const userCity = req.query.city || jsonResponse.city;
     const day = new Date().toDateString();
@@ -675,11 +692,13 @@ app.get('/', async (req, res) => {
     var units = "metric";
     const requestWeather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${userCity}&appid=${apiKey}&units=${units}`)
     const weatherData = await requestWeather.json();
+
     try {
         const icon =  weatherData.weather[0].icon;
         res.render("index",
          {
-            errmsg:null,
+             inject: inject(),
+             errmsg:null,
              usercity: userCity,
              ctry:weatherData.sys.country,
              weatherMain: weatherData.weather[0].main,
@@ -700,6 +719,7 @@ app.get('/', async (req, res) => {
 
     }catch (err) {
             res.render('index', {
+                inject: inject(),
                 errmsg:weatherData.message,
                 usercity: null,
                 ctry:null,
@@ -737,7 +757,7 @@ app.listen(port, function() {
 2. Install dependencies: `npm install`
 3. Set up environment variables for API keys.
 4. Start the server: `node app.js`
-5. Visit [http://localhost:${port}](http://localhost:${port}) in your browser.
+5. Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Author
 
