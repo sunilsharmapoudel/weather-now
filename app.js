@@ -8,7 +8,7 @@ const ejs = require("ejs");
 const port = process.env.PORT || 3000;
 const { IPinfoWrapper } = require("node-ipinfo");
 const { get } = require("http");
-const { inject } =  require ("@vercel/analytics");
+const { inject } = require("@vercel/analytics");
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use((req, res, next) => {
     req.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -35,59 +35,65 @@ app.get('/', async (req, res) => {
     const weatherData = await requestWeather.json();
 
     try {
-        const icon =  weatherData.weather[0].icon;
+        const icon = weatherData.weather[0].icon;
+        const sunrisetime = new Date(weatherData.sys.sunrise * 1000)
+        const sunsettime = new Date(weatherData.sys.sunset * 1000)
+
+        console.log()
+        console.log()
+
         res.render("index",
-         {
-             inject: inject(),
-             errmsg:null,
-             usercity: userCity,
-             ctry:weatherData.sys.country,
-             weatherMain: weatherData.weather[0].main,
-             imageUrl : "https://openweathermap.org/img/wn/"+ icon + "@4x.png",
-             temp:  weatherData.main.temp,
-             desc: weatherData.weather[0].description,
-             mintemp: weatherData.main.temp_min,
-             maxtemp: weatherData.main.temp_max,
-             sunrise: weatherData.sys.sunrise,
-             sunset: weatherData.sys.sunset,
-             longi: weatherData.coord.lon,
-             lati: weatherData.coord.lat,
-             press: weatherData.main.pressure,
-             humi: weatherData.main.humidity,
-             day:day,
-         }
-     )
-
-    }catch (err) {
-            res.render('index', {
+            {
                 inject: inject(),
-                errmsg:weatherData.message,
-                usercity: null,
-                ctry:null,
-                weatherMain: null,
-                imageUrl : null,
-                temp:  null,
-                desc: null,
-                mintemp: null,
-                maxtemp: null,
-                sunrise: null,
-                sunset: null,
-                longi: null,
-                lati: null,
-                press: null,
-                humi: null,
-                day:day,
-            });
-          } 
-    })
+                errmsg: null,
+                usercity: userCity,
+                ctry: weatherData.sys.country,
+                weatherMain: weatherData.weather[0].main,
+                imageUrl: "https://openweathermap.org/img/wn/" + icon + "@4x.png",
+                temp: weatherData.main.temp,
+                desc: weatherData.weather[0].description,
+                mintemp: weatherData.main.temp_min,
+                maxtemp: weatherData.main.temp_max,
+                sunrise: sunrisetime.toLocaleTimeString(),
+                sunset: sunsettime.toLocaleTimeString(),
+                longi: weatherData.coord.lon,
+                lati: weatherData.coord.lat,
+                press: weatherData.main.pressure,
+                humi: weatherData.main.humidity,
+                day: day,
+            }
+        )
 
- app.post("/", (req, res) => {
-      var userCity = req.body.usercity;
-        res.redirect(`/?city=${userCity}`)
-    })
+    } catch (err) {
+        res.render('index', {
+            inject: inject(),
+            errmsg: weatherData.message,
+            usercity: null,
+            ctry: null,
+            weatherMain: null,
+            imageUrl: null,
+            temp: null,
+            desc: null,
+            mintemp: null,
+            maxtemp: null,
+            sunrise: null,
+            sunset: null,
+            longi: null,
+            lati: null,
+            press: null,
+            humi: null,
+            day: day,
+        });
+    }
+})
+
+app.post("/", (req, res) => {
+    var userCity = req.body.usercity;
+    res.redirect(`/?city=${userCity}`)
+})
 
 
 
-app.listen(port, function() {
-    console.log("server is running on "+ port )
+app.listen(port, function () {
+    console.log("server is running on " + port)
 })
