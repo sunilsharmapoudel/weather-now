@@ -9,8 +9,35 @@ const port = process.env.PORT || 3000;
 const { IPinfoWrapper } = require("node-ipinfo");
 const { get } = require("http");
 const { inject } = require("@vercel/analytics");
+const expressRateLimit = require('express-rate-limit');
 
 const app = express();
+
+const limiter = expressRateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 3,
+    handler: (req, res) => {
+        res.render("index", {
+            inject: inject(),
+            errmsg: "Too many requests, please try again later in 1 minutes.",
+            usercity: null,
+            ctry: null,
+            weatherMain: null,
+            imageUrl: null,
+            temp: null,
+            desc: null,
+            mintemp: null,
+            maxtemp: null,
+            sunrise: null,
+            sunset: null,
+            longi: null,
+            lati: null,
+            press: null,
+            humi: null,
+            day: new Date().toDateString(),
+        });
+    }
+});
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -23,7 +50,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', async (req, res) => {
+app.get('/', limiter, async (req, res) => {
     const ip = req.clientIp;
     const request = await fetch(`https://ipinfo.io/${ip}/json?token=${process.env.ip_token}`)
     const jsonResponse = await request.json();
@@ -34,14 +61,11 @@ app.get('/', async (req, res) => {
     const requestWeather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${userCity}&appid=${apiKey}&units=${units}`)
     const weatherData = await requestWeather.json();
 
+
     try {
         const icon = weatherData.weather[0].icon;
         const sunrisetime = new Date(weatherData.sys.sunrise * 1000)
         const sunsettime = new Date(weatherData.sys.sunset * 1000)
-
-        console.log()
-        console.log()
-
         res.render("index",
             {
                 inject: inject(),
