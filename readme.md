@@ -1,4 +1,4 @@
-# WeatherNow - Platform to get current weather information of yor city.
+# WeatherNow - Platform to get current weather information of your city.
 Get instant weather updates for any city with WeatherNow: EJS-powered project, leveraging OpenWeatherAPI and IPinfo.io for accurate data and location detection
 
 ## Table of contents
@@ -37,8 +37,6 @@ Moile Screenshot
 - Vercel
 
 ### What I learned
-
-## What I Learned
 
 - **Backend Development**: Used Node.js and Express.js for server-side logic, routing, and middleware.
 - **Frontend Templating**: Utilized EJS for generating dynamic HTML content.
